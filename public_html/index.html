@@ -1,0 +1,328 @@
+
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    <title>Rapid Dev Group | Rapid Mobile App Development</title>
+    <meta name="author" content="Marc Godard" />
+    <meta name="Resource-type" content="Document" />
+    <meta name="Description" content="We rapidly prototype mobile apps. Good for presentations, demos, A/B testing, or just having a completed app quickly.">
+    <meta name="google" content="nositelinkssearchbox" />
+    <meta name="google-site-verification" content="1Cyw1rxwVs-ULLp-SMIRiaotysRgJ88arLuU7MKOYQg" />
+
+    <link href="common/font/stylesheet.css" rel="stylesheet" type="text/css" />
+    <link href="common/font-awesome-4.3.0/css/font-awesome.min.css" rel="stylesheet" type="text/css" />
+    <link href="common/css/common.css" rel="stylesheet" type="text/css" />
+    <link href="common/css/jquery.fullPage.css" rel="stylesheet" type="text/css" />
+    <link href="common/css/devices.min.css" rel="stylesheet" type="text/css">
+    <link href="common/css/animate.css" rel="stylesheet" type="text/css">
+</head>
+<body>
+
+    <div id="iphone" class="marvel-device iphone5s silver">
+        <div class="top-bar"></div>
+        <div class="sleep"></div>
+        <div class="volume"></div>
+        <div class="camera"></div>
+        <div class="sensor"></div>
+        <div class="speaker"></div>
+        <div class="bubble"><i class="fa fa-times-circle close"></i> I Work, Try Me Out!</div>
+        <div class="screen">
+            <iframe id="demo-app-position" class="app" src="subdomains/tvapp/"></iframe>
+            <iframe id="demo2-app-position" class="app" src="subdomains/2048app/"></iframe>
+        </div>
+        <div class="home"></div>
+        <div class="bottom-bar"></div>
+    </div>
+
+    <ul id="menu">
+        <li data-menuanchor="home" class="active"><a href="#home">Rapid Dev Group</a></li>
+        <li data-menuanchor="about"><a href="#about">About</a></li>
+        <li data-menuanchor="contact"><a href="#contact">Contact</a></li>
+    </ul>
+
+    <div class="bottom-btn">
+        <i class="fa fa-angle-down"></i>
+    </div>
+
+    <div id="full-page">
+        <div class="section active" id="section0">
+            <canvas id="introCanvas" width="320" height="200"></canvas>
+        </div>
+        <div class="section" id="section1">
+            <div class="strip">
+                <div class="left">
+                    <h1 class="fadeIn">Rapid Prototyping</h1>
+                    <p class="fadeIn">We rapidly create working web and mobile app prototypes to show potential investors, or clients what your application will do.</p>
+                    <p class="fadeIn">Here is a working example of a basic prototype.</p>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section2">
+            <div class="slide active">
+                <div class="strip">
+                    <div class="left">
+                        <h1 class="fadeIn">Full Featured Apps</h1>
+                        <p class="fadeIn">We can create all types of complete apps for all devices.</p>
+                        <p class="fadeIn">Here is a working game app.</p>
+                    </div>
+                </div>
+            </div>
+            <div class="slide">
+                <div class="strip">
+                    <div class="left">
+                        <h1 class="fadeIn">Explore</h1>
+                        <span class="links fadeIn">
+                            <a href="#" class="default active orientation">Portrait</a> - <a href="#" class="orientation">Landscape</a>
+                            <br>
+                            <a href="#" class="default active device">iPhone 5</a> - <a href="#" class="device">iPhone 6Plus</a> - <a href="#" class="device">iPad Mini</a>
+                        </span>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="section" id="section3">
+            <div class="contact-strip">
+                <br/>
+                <br/>
+                <br/>
+                <h1><a href="mailto:info@rapiddevgroup.com">info@rapiddevgroup.com</a></h1>
+
+            </div>
+        </div>
+    </div>
+
+    <script src="common/js/pace.min.js" data-pace-options='{ "ajax": false }'></script>
+    <script src="common/js/jquery.min.js"></script>
+    <script src="common/js/jquery.fullPage.min.js"></script>
+
+    <script src="https://code.createjs.com/easeljs-0.8.0.min.js"></script>
+    <script src="https://code.createjs.com/tweenjs-0.6.0.min.js"></script>
+
+    <script>
+        $(document).ready(function() {
+
+            Pace.on('done', loaded);
+
+            $('iframe').on('scroll', function(e){
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            window.addEventListener("orientationchange", init, false);
+            window.addEventListener("resize", init, false);
+
+            $('.orientation').click(changeDeviceOrientatio);
+
+            $('.close').click(function(){
+               $(this).parent('.bubble').css({opacity: 0});
+            });
+
+            $(".screen").bind('mousewheel', function(e) {
+                e.preventDefault();
+                e.stopPropagation();
+            });
+
+            function changeDeviceOrientatio(e) {
+                $('.orientation').removeClass('active');
+                $(this).addClass('active');
+
+                if ($(this).text() === 'Landscape') {
+                    $('#iphone').addClass('landscape');
+                } else {
+                    $('#iphone').removeClass('landscape');
+                }
+            }
+
+            $('.device').click(changeDevice);
+
+            function changeDevice(e) {
+                $('.device').removeClass('active');
+                $(this).addClass('active');
+                $('#iphone').removeClass('iphone5s iphone6plus ipad');
+
+                if ($(this).text() === 'iPhone 5') {
+                    $('#iphone').addClass('iphone5s');
+                } else if ($(this).text() === 'iPhone 6Plus') {
+                    $('#iphone').addClass('iphone6plus');
+                } else if ($(this).text() === 'iPad Mini') {
+                    $('#iphone').addClass('ipad');
+                }
+            }
+
+            function resetDevice() {
+                $('#iphone').removeClass('iphone5s iphone6plus ipad landscape');
+                $('#iphone').addClass('iphone5s');
+
+                $('.device').removeClass('active');
+                $('.orientation').removeClass('active');
+
+                $('.default').addClass('active');
+            }
+
+            var width = $(window).width();
+            var height = $(window).height();
+
+            var stage;
+            var tweens;
+            var circleCount;
+            var textOffset;
+            var text2;
+            var initRunning = false;
+
+            function init() {
+                if (!initRunning) {
+                    initRunning = true;
+                    width = $(window).width();
+                    height = $(window).height();
+                    tweens = [];
+                    circleCount = 50;
+                    textOffset = 13;
+                    $('#introCanvas').attr('width', width).attr('height', height);
+
+                    stage = new createjs.Stage("introCanvas");
+                    loadCircles();
+                    setTimeout(function () {
+                        loadText();
+                        initRunning = false;
+                    }, 1000);
+                    setTimeout(dropsCircles, 10500);
+
+                    createjs.Ticker.setFPS(60);
+                    createjs.Ticker.addEventListener("tick", stage);
+                }
+            }
+
+            function loaded() {
+                setTimeout(init, 1000);
+                $('#full-page').fullpage({
+                    anchors: ['home', 'about', 'more', 'contact'],
+                    menu: '#menu',
+                    css3: true,
+                    afterLoad: function(anchorLink, index){
+                        if (index != 1 && tweens.length > 0) {
+                            for (var i = 0; i < circleCount; i++) {
+                                tweens[i].ref.cache(-((i + 1) * 6), -((i + 1) * 6), (i + 1) * 12, (i + 1) * 12);
+                            }
+                        } else if (tweens.length > 0){
+                            for (var i = 0; i < circleCount; i++) {
+                                tweens[i].ref.uncache();
+                            }
+                            setTimeout(dropsCircles, 10500);
+                        }
+
+                        if (index == 1 && tweens.length > 0) {
+                            for (var i = 0; i < circleCount; i++) {
+                                var ref = tweens[i].ref;
+                                createjs.Tween.get(ref, {override: true})
+                                        .to({
+                                            x: Math.random() * width,
+                                            y: Math.random() * height
+                                        }, (0.5 + i * 0.04) * 2000, createjs.Ease.bounceOut)
+                                        .to({
+                                            x: width / 2,
+                                            y: height / 2 - textOffset,
+                                            scaleX:1,
+                                            scaleY:1
+                                        }, (0.5 + i * 0.04) * 2500, createjs.Ease.bounceOut);
+                            }
+
+                            createjs.Tween.get(text2, {loop: false, override: true})
+                                    .to({alpha: 0}, 2000, createjs.Ease.quadIn)
+                                    .to({alpha: 1}, 4500, createjs.Ease.quadIn);
+
+                            stage.update();
+                        } else if (index === 3) {
+                            if (!sessionStorage.getItem('gameIntroPlayed')) {
+                                $('#demo2-app-position')[0].contentWindow.clearAll();
+                                $('#demo2-app-position')[0].contentWindow.setGameBoard();
+                                $('#demo2-app-position')[0].contentWindow.intro();
+                                sessionStorage.setItem('gameIntroPlayed', true);
+                            }
+                        }
+                    },
+                    onLeave: resetDevice,
+                    afterSlideLoad: resetDevice
+                });
+
+                if ($(window).width() < 768) {
+                    $.fn.fullpage.setAllowScrolling(false, 'left, right');
+                }
+
+                $('.bottom-btn').click(function(){
+                    $.fn.fullpage.moveSectionDown();
+                });
+            }
+
+            function loadText() {
+                var text = new createjs.Text("Rapid Dev Group", "100px ostrich_sansblack", "#fff");
+                var textWidth = 284.6;
+                text.x = width / 2 - Math.round(textWidth) + 1;
+                text.y = height / 2 - 50 + 1;
+                text.alpha = 0;
+                stage.addChild(text);
+
+                createjs.Tween.get(text, {loop: false})
+                        .to({alpha: 1}, 2000, createjs.Ease.quadIn);
+
+                text2 = new createjs.Text("Rapid Dev Group", "100px ostrich_sansblack", "#000");
+                text2.x = width / 2 - Math.round(textWidth);
+                text2.y = height / 2 - 50;
+                text2.alpha = 0;
+                stage.addChild(text2);
+
+                createjs.Tween.get(text2, {loop: false})
+                        .to({alpha: 1}, 4500, createjs.Ease.quadIn);
+            }
+
+            function loadCircles() {
+                for (var i = 0; i < circleCount; i++) {
+                    var circle = new createjs.Shape();
+                    circle.graphics.setStrokeStyle(12);
+                    circle.graphics.beginStroke("#ff9500");
+                    circle.graphics.drawCircle(0, 0, (i + 1) * 6);
+                    circle.alpha = 0;
+                    circle.x = Math.random() * width;
+                    circle.y = Math.random() * height;
+                    circle.compositeOperation = "lighter";
+
+                    var tween = createjs.Tween.get(circle).to({
+                        x: width / 2,
+                        y: height / 2 - textOffset,
+                        alpha: 1 - i * 0.02
+                    }, (0.5 + i * 0.04) * 2500, createjs.Ease.bounceOut);
+                    tweens.push({tween: tween, ref: circle});
+                    stage.addChild(circle);
+                }
+            }
+
+            function dropsCircles() {
+                for (var i = 0; i < circleCount; i++) {
+                    var ref = tweens[i].ref;
+                    createjs.Tween.get(ref, {override: false})
+                            .to({
+                                scaleX: 0.97,scaleY: 0.97,
+                                x: width / 2,
+                                y: height / 2 - textOffset
+                            }, (0.5 + i * 0.04) * 2000, createjs.Ease.bounceOut)
+                            .to({
+                                scaleX:1,scaleY:1,
+                                x: width / 2,
+                                y: height / 2 - textOffset
+                            }, (0.5 + i * 0.04) * 2500, createjs.Ease.bounceOut);
+                }
+                stage.update();
+            }
+        });
+    </script>
+
+    <script>
+        (function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){
+            (i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),
+                m=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)
+        })(window,document,'script','//www.google-analytics.com/analytics.js','ga');
+        ga('create', 'UA-61003821-1', 'auto');
+        ga('send', 'pageview');
+    </script>
+</body>
+</html>
